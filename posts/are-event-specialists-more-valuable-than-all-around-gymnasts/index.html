@@ -200,45 +200,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>mgym <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"2024MGYM - Sheet.csv"</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mgym<span class="sc">$</span>Event_Score <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(mgym<span class="sc">$</span>Event_Score))</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mgym <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Contribution_Percentage =</span> (Event_Score <span class="sc">/</span> Team_Total_Score) <span class="sc">*</span> <span class="dv">100</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>specialists <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Classification <span class="sc">==</span> <span class="st">"Specialist"</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>allarounders <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Classification <span class="sc">==</span><span class="st">"AA"</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>averages <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event, Classification) <span class="sc">|&gt;</span> </span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Score =</span> <span class="fu">mean</span>(Event_Score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>total_average_score <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event) <span class="sc">|&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Average_Score =</span> <span class="fu">mean</span>(Team_Total_Score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>average_contributions <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Classification) <span class="sc">|&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Percentage =</span> <span class="fu">mean</span>(Contribution_Percentage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>event_contributions <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event, Classification) <span class="sc">|&gt;</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Contribution =</span> <span class="fu">sum</span>(Contribution_Percentage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>specialist_avg_contribution <span class="ot">&lt;-</span> specialists <span class="sc">|&gt;</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event) <span class="sc">|&gt;</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Contribution =</span> <span class="fu">mean</span>(Contribution_Percentage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>allarounder_avg_contribution <span class="ot">&lt;-</span> allarounders <span class="sc">|&gt;</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event) <span class="sc">|&gt;</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Contribution =</span> <span class="fu">mean</span>(Contribution_Percentage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>classification_count <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Classification) <span class="sc">|&gt;</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Count =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>rosters <span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"ROSTER - Sheet1.csv"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mgym<span class="sc">$</span>Event_Score <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(mgym<span class="sc">$</span>Event_Score))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>mgym <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Contribution_Percentage =</span> (Event_Score <span class="sc">/</span> Team_Total_Score) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>specialists <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Classification <span class="sc">==</span> <span class="st">"Specialist"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>allarounders <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Classification <span class="sc">==</span><span class="st">"AA"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>averages <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event, Classification) <span class="sc">|&gt;</span> </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Score =</span> <span class="fu">mean</span>(Event_Score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>total_average_score <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event) <span class="sc">|&gt;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Average_Score =</span> <span class="fu">mean</span>(Team_Total_Score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>average_contributions <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Classification) <span class="sc">|&gt;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Percentage =</span> <span class="fu">mean</span>(Contribution_Percentage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>event_contributions <span class="ot">&lt;-</span> mgym <span class="sc">|&gt;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event, Classification) <span class="sc">|&gt;</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Contribution =</span> <span class="fu">sum</span>(Contribution_Percentage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>specialist_avg_contribution <span class="ot">&lt;-</span> specialists <span class="sc">|&gt;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event) <span class="sc">|&gt;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Contribution =</span> <span class="fu">mean</span>(Contribution_Percentage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>allarounder_avg_contribution <span class="ot">&lt;-</span> allarounders <span class="sc">|&gt;</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Event) <span class="sc">|&gt;</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Contribution =</span> <span class="fu">mean</span>(Contribution_Percentage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>classification_count <span class="ot">&lt;-</span> rosters <span class="sc">|&gt;</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Classification) <span class="sc">|&gt;</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Count =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -272,23 +273,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_table_lines</span>(<span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="dfwlcmzpjd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dfwlcmzpjd table {
+<div id="sfpgumvjfr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#sfpgumvjfr table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dfwlcmzpjd thead, #dfwlcmzpjd tbody, #dfwlcmzpjd tfoot, #dfwlcmzpjd tr, #dfwlcmzpjd td, #dfwlcmzpjd th {
+#sfpgumvjfr thead, #sfpgumvjfr tbody, #sfpgumvjfr tfoot, #sfpgumvjfr tr, #sfpgumvjfr td, #sfpgumvjfr th {
   border-style: none;
 }
 
-#dfwlcmzpjd p {
+#sfpgumvjfr p {
   margin: 0;
   padding: 0;
 }
 
-#dfwlcmzpjd .gt_table {
+#sfpgumvjfr .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -314,12 +315,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_caption {
+#sfpgumvjfr .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dfwlcmzpjd .gt_title {
+#sfpgumvjfr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -331,7 +332,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#dfwlcmzpjd .gt_subtitle {
+#sfpgumvjfr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -343,7 +344,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#dfwlcmzpjd .gt_heading {
+#sfpgumvjfr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -355,13 +356,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_bottom_border {
+#sfpgumvjfr .gt_bottom_border {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_col_headings {
+#sfpgumvjfr .gt_col_headings {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -376,7 +377,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_col_heading {
+#sfpgumvjfr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -396,7 +397,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#dfwlcmzpjd .gt_column_spanner_outer {
+#sfpgumvjfr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -408,15 +409,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#dfwlcmzpjd .gt_column_spanner_outer:first-child {
+#sfpgumvjfr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dfwlcmzpjd .gt_column_spanner_outer:last-child {
+#sfpgumvjfr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dfwlcmzpjd .gt_column_spanner {
+#sfpgumvjfr .gt_column_spanner {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -428,11 +429,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#dfwlcmzpjd .gt_spanner_row {
+#sfpgumvjfr .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dfwlcmzpjd .gt_group_heading {
+#sfpgumvjfr .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -458,7 +459,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#dfwlcmzpjd .gt_empty_group_heading {
+#sfpgumvjfr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -473,15 +474,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#dfwlcmzpjd .gt_from_md > :first-child {
+#sfpgumvjfr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dfwlcmzpjd .gt_from_md > :last-child {
+#sfpgumvjfr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dfwlcmzpjd .gt_row {
+#sfpgumvjfr .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -500,7 +501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#dfwlcmzpjd .gt_stub {
+#sfpgumvjfr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -513,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dfwlcmzpjd .gt_stub_row_group {
+#sfpgumvjfr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -527,15 +528,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#dfwlcmzpjd .gt_row_group_first td {
+#sfpgumvjfr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dfwlcmzpjd .gt_row_group_first th {
+#sfpgumvjfr .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dfwlcmzpjd .gt_summary_row {
+#sfpgumvjfr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -545,16 +546,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dfwlcmzpjd .gt_first_summary_row {
+#sfpgumvjfr .gt_first_summary_row {
   border-top-style: none;
   border-top-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_first_summary_row.thick {
+#sfpgumvjfr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dfwlcmzpjd .gt_last_summary_row {
+#sfpgumvjfr .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -564,7 +565,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_grand_summary_row {
+#sfpgumvjfr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -574,7 +575,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dfwlcmzpjd .gt_first_grand_summary_row {
+#sfpgumvjfr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -584,7 +585,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_last_grand_summary_row_top {
+#sfpgumvjfr .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -594,11 +595,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_striped {
+#sfpgumvjfr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dfwlcmzpjd .gt_table_body {
+#sfpgumvjfr .gt_table_body {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -607,7 +608,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_footnotes {
+#sfpgumvjfr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -621,7 +622,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_footnote {
+#sfpgumvjfr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -630,7 +631,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dfwlcmzpjd .gt_sourcenotes {
+#sfpgumvjfr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -644,7 +645,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dfwlcmzpjd .gt_sourcenote {
+#sfpgumvjfr .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -652,72 +653,72 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dfwlcmzpjd .gt_left {
+#sfpgumvjfr .gt_left {
   text-align: left;
 }
 
-#dfwlcmzpjd .gt_center {
+#sfpgumvjfr .gt_center {
   text-align: center;
 }
 
-#dfwlcmzpjd .gt_right {
+#sfpgumvjfr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dfwlcmzpjd .gt_font_normal {
+#sfpgumvjfr .gt_font_normal {
   font-weight: normal;
 }
 
-#dfwlcmzpjd .gt_font_bold {
+#sfpgumvjfr .gt_font_bold {
   font-weight: bold;
 }
 
-#dfwlcmzpjd .gt_font_italic {
+#sfpgumvjfr .gt_font_italic {
   font-style: italic;
 }
 
-#dfwlcmzpjd .gt_super {
+#sfpgumvjfr .gt_super {
   font-size: 65%;
 }
 
-#dfwlcmzpjd .gt_footnote_marks {
+#sfpgumvjfr .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dfwlcmzpjd .gt_asterisk {
+#sfpgumvjfr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dfwlcmzpjd .gt_indent_1 {
+#sfpgumvjfr .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dfwlcmzpjd .gt_indent_2 {
+#sfpgumvjfr .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dfwlcmzpjd .gt_indent_3 {
+#sfpgumvjfr .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dfwlcmzpjd .gt_indent_4 {
+#sfpgumvjfr .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dfwlcmzpjd .gt_indent_5 {
+#sfpgumvjfr .gt_indent_5 {
   text-indent: 25px;
 }
 
-#dfwlcmzpjd .katex-display {
+#sfpgumvjfr .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#dfwlcmzpjd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#sfpgumvjfr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -738,11 +739,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_left" headers="Classification">AA</td>
-<td class="gt_row gt_right" headers="Count">72</td>
+<td class="gt_row gt_right" headers="Count">7</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left gt_striped" headers="Classification">Specialist</td>
-<td class="gt_row gt_right gt_striped" headers="Count">158</td>
+<td class="gt_row gt_right gt_striped" headers="Count">42</td>
 </tr>
 </tbody><tfoot class="gt_sourcenotes">
 <tr class="odd">
