@@ -7,6 +7,13 @@
     "text": "Meg Gross is a junior at the University of Nebraska-Lincoln double-majoring in Sports Media and Communications and Advertising and Public Relations.\nAs a Creative Media Intern for Nebraska Athletics, Gross manages social media platforms and creates content for a variety of Husker sports, including football, volleyball, women’s and men’s gymnastics and softball."
   },
   {
+    "objectID": "posts/can-holgerson-fix-the-husker-offense/index.html",
+    "href": "posts/can-holgerson-fix-the-husker-offense/index.html",
+    "title": "Is Dana Holgerson saving Nebraska Football?",
+    "section": "",
+    "text": "Code\n#|include: false\nlibrary(tidyverse)\n\nhuskers24&lt;- read_csv(\"GameLogs - GAMEBYGAME.csv\")"
+  },
+  {
     "objectID": "posts/are-event-specialists-more-valuable-than-all-around-gymnasts/index.html",
     "href": "posts/are-event-specialists-more-valuable-than-all-around-gymnasts/index.html",
     "title": "Are event specialists more valuable than all-around gymnasts?",
@@ -18,6 +25,6 @@
     "href": "index.html",
     "title": "Meg’s Sports Blog",
     "section": "",
-    "text": "Are event specialists more valuable than all-around gymnasts?\n\n\n\n\n\n\ngymnastics\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nMeg Gross\n\n\n\n\n\n\nNo matching items"
+    "text": "Are event specialists more valuable than all-around gymnasts?\n\n\n\n\n\n\ngymnastics\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nMeg Gross\n\n\n\n\n\n\n\n\n\n\n\n\nIs Dana Holgerson saving Nebraska Football?\n\n\n\n\n\n\nfootball\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nMeg Gross\n\n\n\n\n\n\nNo matching items"
   }
 ]
